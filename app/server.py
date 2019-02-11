@@ -8,8 +8,8 @@ from io import BytesIO
 from fastai import *
 from fastai.vision import *
 
-export_file_url = 'https://drive.google.com/uc?export=download&id=1V4-DigEN0noNPcrDgQjHFtmkSICmNgAT'
-export_file_name = 'mnist.pth'
+export_file_url = "https://drive.google.com/uc?export=download&id=1eYzTDNOQd_2jlHK1VHIx_9XewG-JcWtK"
+export_file_name = 'fruits.pkl'
 
 classes = ['1', '2', "3", "4"]
 path = Path(__file__).parent
