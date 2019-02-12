@@ -8,7 +8,7 @@ from io import BytesIO
 from fastai import *
 from fastai.vision import *
 
-export_file_url = "https://drive.google.com/uc?export=download&id=15aO8OTC2Vh9ED3mk9dufGeG5RHGMkgdP"
+export_file_url = "https://drive.google.com/uc?export=download&confirm=G0VT&id=15aO8OTC2Vh9ED3mk9dufGeG5RHGMkgdP"
 export_file_name = 'superresolution.pkl'
 
 classes = ['1', '2', "3", "4"]
