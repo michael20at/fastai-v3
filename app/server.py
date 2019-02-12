@@ -9,7 +9,7 @@ from fastai import *
 from fastai.vision import *
 
 export_file_url = "https://drive.google.com/uc?export=download&id=15aO8OTC2Vh9ED3mk9dufGeG5RHGMkgdP"
-export_file__name = 'superresolution.pkl'
+export_file_name = 'superresolution.pkl'
 
 classes = ['1', '2', "3", "4"]
 path = Path(__file__).parent
