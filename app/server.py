@@ -58,8 +58,9 @@ async def setup_learner_256():
 loop = asyncio.get_event_loop()
 tasks = [asyncio.ensure_future(setup_learner_256()), 
          asyncio.ensure_future(setup_learner())]
-learn_256 = loop.run_until_complete(asyncio.gather(*tasks))[0]
-learn = loop.run_until_complete(asyncio.gather(*tasks))[1]
+test = loop.run_until_complete(asyncio.gather(*tasks))
+learn_256 = test[0]
+learn = test[1]
 loop.close()
 
 @app.route('/')
