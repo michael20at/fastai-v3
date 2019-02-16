@@ -45,7 +45,7 @@ async def setup_learner():
 async def setup_learner_256():
     await download_file(export_file_256_url, path/export_file_256_name)
     try:
-        learn_256 = load_learner(path, export_file_name)
+        learn_256 = load_learner(path, export_file_256_name)
         return learn_256
     except RuntimeError as e:
         if len(e.args) > 0 and 'CPU-only machine' in e.args[0]:
