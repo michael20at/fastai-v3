@@ -29,8 +29,8 @@ async def download_file(url, dest):
             data = await response.read()
             with open(dest, 'wb') as f: f.write(data)
 
-async def setup_learner(file_url, file_name):
-    await download_file(file_url, path/file_name)
+async def setup_learner():
+    await download_file(export_file_url, path/export_file_name)
     try:
         learn = load_learner(path, export_file_name)
         return learn
@@ -42,12 +42,24 @@ async def setup_learner(file_url, file_name):
         else:
             raise
             
+async def setup_learner_256():
+    await download_file(export_file_256_url, path/export_file_256_name)
+    try:
+        learn_256 = load_learner(path, export_file_name)
+        return learn_256
+    except RuntimeError as e:
+        if len(e.args) > 0 and 'CPU-only machine' in e.args[0]:
+            print(e)
+            message = "\n\nThis model was trained with an old version of fastai and will not work in a CPU environment.\n\nPlease update the fastai library in your training environment and export your model again.\n\nSee instructions for 'Returning to work' at https://course.fast.ai."
+            raise RuntimeError(message)
+        else:
+            raise
+            
 loop = asyncio.get_event_loop()
-tasks = [asyncio.ensure_future(setup_learner(export_file_url, export_file_name)), 
-         asyncio.ensure_future(setup_learner(export_file_256_url, export_file_256_name))]
-learn_256 = loop.run_until_complete(asyncio.gather(*tasks))[1]
-learn = loop.run_until_complete(asyncio.gather(*tasks))[0]
-
+tasks = [asyncio.ensure_future(setup_learner_256()), 
+         asyncio.ensure_future(setup_learner())]
+learn_256 = loop.run_until_complete(asyncio.gather(*tasks))[0]
+learn = loop.run_until_complete(asyncio.gather(*tasks))[1]
 loop.close()
 
 @app.route('/')
