@@ -45,8 +45,9 @@ async def setup_learner(file_url, file_name):
 loop = asyncio.get_event_loop()
 tasks = [asyncio.ensure_future(setup_learner(export_file_url, export_file_name)), 
          asyncio.ensure_future(setup_learner(export_file_256_url, export_file_256_name))]
-learn = loop.run_until_complete(asyncio.gather(*tasks))[0]
 learn_256 = loop.run_until_complete(asyncio.gather(*tasks))[1]
+learn = loop.run_until_complete(asyncio.gather(*tasks))[0]
+
 loop.close()
 
 @app.route('/')
