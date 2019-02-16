@@ -11,7 +11,10 @@ from fastai.vision import *
 export_file_url = "https://drive.google.com/uc?export=download&id=1LGGd9NiiwZt8UL2v0tyKof3fl9x-XqFe"
 export_file_name = 'fashion1.pth'
 
-classes = ['1', '2', "3", "4"]
+export_file_256_url = "https://drive.google.com/uc?export=download&id=1p9PreqCyfZjwTuGjIeQHrTDSsxiDgEsT"
+export_file_256_name = '256objects.pth'
+
+#classes = ['1', '2', "3", "4"]
 path = Path(__file__).parent
 
 #app = Starlette(template_directory="app/view")
@@ -26,8 +29,8 @@ async def download_file(url, dest):
             data = await response.read()
             with open(dest, 'wb') as f: f.write(data)
 
-async def setup_learner():
-    await download_file(export_file_url, path/export_file_name)
+async def setup_learner(file_url, file_name):
+    await download_file(file_url, path/file_name)
     try:
         learn = load_learner(path, export_file_name)
         return learn
@@ -38,10 +41,12 @@ async def setup_learner():
             raise RuntimeError(message)
         else:
             raise
-
+            
 loop = asyncio.get_event_loop()
-tasks = [asyncio.ensure_future(setup_learner())]
+tasks = [asyncio.ensure_future(setup_learner(export_file_url, export_file_name)), 
+         asyncio.ensure_future(setup_learner_256(export_file_256_url, export_file_256_name))]
 learn = loop.run_until_complete(asyncio.gather(*tasks))[0]
+learn_256 = loop.run_until_complete(asyncio.gather(*tasks))[1]
 loop.close()
 
 @app.route('/')
@@ -69,7 +74,7 @@ async def analyze(request):
     data = await request.form()
     img_bytes = await (data['file'].read())
     img = open_image(BytesIO(img_bytes))
-    prediction = learn.predict(img)[0]
+    prediction = learn_256.predict(img)[0]
     return JSONResponse({'result': str(prediction)})
 
 @app.route('/analyze', methods=['POST'])
